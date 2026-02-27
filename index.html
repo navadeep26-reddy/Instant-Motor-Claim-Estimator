@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Car Damage Pre-Approval</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+input[type="file"] {
+    margin: 15px 0;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #2a5298;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1e3c72;
+}
+
+img {
+    max-width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+.result {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #2a5298;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    th {
+        display: none;
+    }
+    td {
+        margin-bottom: 10px;
+        background: #f4f4f4;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🚗 AI Car Damage Pre-Approval System</h1>
+
+<div class="card">
+    <h2>Upload Car Damage Image</h2>
+    <input type="file" id="imageInput" accept="image/*">
+    <br>
+    <button onclick="analyzeDamage()">Analyze Damage</button>
+
+    <div id="preview"></div>
+    <div id="result" class="result"></div>
+</div>
+
+<div class="card">
+    <h2>Claim History</h2>
+    <table id="claimTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image Name</th>
+                <th>Damage</th>
+                <th>Estimated Cost (₹)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+</div>
+
+<script>
+let claimId = 1;
+
+function analyzeDamage() {
+
+    const fileInput = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+    const resultDiv = document.getElementById("result");
+    const tableBody = document.querySelector("#claimTable tbody");
+
+    if (!fileInput.files.length) {
+        alert("Please upload an image!");
+        return;
+    }
+
+    const file = fileInput.files[0];
+
+    // Show preview
+    preview.innerHTML = `<img src="${URL.createObjectURL(file)}">`;
+
+    // Simulated AI Damage Detection
+    let randomScore = Math.floor(Math.random() * 100);
+    let damageType, cost;
+
+    if (randomScore > 70) {
+        damageType = "Major Damage";
+        cost = 20000;
+    } else if (randomScore > 40) {
+        damageType = "Moderate Damage";
+        cost = 10000;
+    } else {
+        damageType = "Minor Damage";
+        cost = 4000;
+    }
+
+    resultDiv.innerHTML = `
+        Damage Type: ${damageType} <br>
+        Estimated Cost: ₹${cost}
+    `;
+
+    // Add to table
+    let row = `
+        <tr>
+            <td>${claimId++}</td>
+            <td>${file.name}</td>
+            <td>${damageType}</td>
+            <td>${cost}</td>
+        </tr>
+    `;
+
+    tableBody.innerHTML += row;
+
+    fileInput.value = "";
+}
+</script>
+
+</body>
+</html>
